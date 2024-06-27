@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+option go_package = "./protductDB";
+
+service ProductServer {
+    rpc CreateProduct(CreateProductReq)returns (Product);
+    rpc GetProductById(ProductByIdReq) returns (Product);
+    rpc GetAllProducts(GetAllProductReq) returns (GetAllProductsRes);
+    rpc UpdateProduc(UpdateProductReq) returns (Product);
+    rpc DeletedProduct(DeleteReq) returns (Empty);
+    rpc ShowRealTimeAddinAndDeleteing(Empty) returns (stream Product);
+
+}
+
+message CreateProductReq {
+    string name = 1;
+    string category = 2;
+    string price = 3;
+    int64 count = 4;
+
+}
+
+message Product {
+    string id = 1;
+    string name = 2;
+    string category  = 3;
+    string price = 4;
+    int64 count = 5;
+    string created_at = 6;
+    string updated_at = 7;
+    string deleted_at = 8;
+    string status = 9;
+}
+
+message ProductByIdReq {
+    string id  = 1;
+}
+
+message DeleteReq {
+    string id  = 1;
+    bool is_hard_delete = 2;
+}
+
+message GetAllProductReq {
+    string field =  1;
+    string value = 2;
+    int32 limit = 3;
+    int32 page = 4;
+}
+
+message GetAllProductsRes {
+    repeated Product products = 1;
+}
+
+ message UpdateProductReq {
+    string name = 1;
+    string category = 2;
+    string proce = 3;
+    int64 count = 4;
+}
+
+message Empty {
+
+}

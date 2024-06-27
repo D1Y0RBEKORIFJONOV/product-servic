@@ -1,0 +1,5 @@
+env: "local"
+storage_path: "postgres//postgres:+_+diyor2005+_+%localhost:5432/product?sslmode=disable"
+grpc:
+  port: 9000
+  timeout: 5s
