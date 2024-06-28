@@ -33,6 +33,7 @@ type GetAllProductReq struct {
 }
 
 type UpdateProducReq  struct{
+	ID string
 	Name string
 	Category string
 	Price string

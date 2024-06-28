@@ -53,6 +53,7 @@ message GetAllProductsRes {
 }
 
  message UpdateProductReq {
+    string id  = 6;
     string name = 1;
     string category = 2;
     string proce = 3;

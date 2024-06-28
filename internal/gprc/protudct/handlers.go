@@ -164,6 +164,7 @@ func (s *serverApi) UpdateProduc(ctx context.Context, req *protductDB.UpdateProd
 	ctx, cancel := context.WithTimeout(ctx, time.Second*4)
 	defer cancel()
 	product,err := s.product.UpdateProduc(ctx,&models.UpdateProducReq{
+		ID: req.Id,
 		Name: req.Name,
 		Category: req.Category,
 		Count: req.Count,
