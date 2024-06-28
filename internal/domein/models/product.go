@@ -1,41 +1,42 @@
 package models
 
-type Product struct {
-	Id string 
-	Name string
-	Category string
-	Price string
-	Count int64
-	Status string
-	Created_at string
-	Updated_at string
-	Deleted_at string
-}
+import "time"
 
+type Product struct {
+	Id         string
+	Name       string
+	Category   string
+	Price      string
+	Count      int64
+	Status     string
+	Created_at time.Time
+	Updated_at time.Time
+	Deleted_at time.Time
+}
 
 type CreateProductReq struct {
-	Name string
+	Name     string
 	Category string
-	Price string
-	Count int64
+	Price    string
+	Count    int64
 }
 type ProductDeleteReq struct {
-	ID string
+	ID           string
 	IsHardDelete bool
 }
-type Empty struct {}
+type Empty struct{}
 
 type GetAllProductReq struct {
 	Field string
 	Value string
-	Limit int32
-	Page int32
+	Limit uint64
+	Page  uint64
 }
 
-type UpdateProducReq  struct{
-	ID string
-	Name string
+type UpdateProducReq struct {
+	ID       string
+	Name     string
 	Category string
-	Price string
-	Count int64
+	Price    string
+	Count    int64
 }

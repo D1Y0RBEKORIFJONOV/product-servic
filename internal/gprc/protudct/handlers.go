@@ -2,6 +2,7 @@ package protudct
 
 import (
 	"context"
+	"log"
 	"server/internal/domein/models"
 	"server/protductDB"
 	"time"
@@ -39,9 +40,9 @@ func (s *serverApi) CreateProduct(ctx context.Context,
 		Count:     product.Count,
 		Status:    product.Status,
 		Category:  product.Category,
-		CreatedAt: product.Created_at,
-		UpdatedAt: product.Updated_at,
-		DeletedAt: product.Deleted_at,
+		CreatedAt: product.Created_at.String(),
+		UpdatedAt: product.Updated_at.String(),
+		DeletedAt: product.Deleted_at.String(),
 	}, nil
 }
 
@@ -74,8 +75,8 @@ func (s *serverApi) GetAllProducts(ctx context.Context, req *protductDB.GetAllPr
 	products, err := s.product.GetAllProduct(ctx, &models.GetAllProductReq{
 		Field: req.Field,
 		Value: req.Value,
-		Limit: req.Limit,
-		Page:  req.Page,
+		Limit: uint64(req.Limit),
+		Page:  uint64(req.Page),
 	})
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
@@ -90,9 +91,9 @@ func (s *serverApi) GetAllProducts(ctx context.Context, req *protductDB.GetAllPr
 		product.Price = products[i].Price
 		product.Count = products[i].Count
 		product.Status = products[i].Status
-		product.CreatedAt = products[i].Created_at
-		product.UpdatedAt = products[i].Updated_at
-		product.DeletedAt = products[i].Deleted_at
+		product.CreatedAt = products[i].Created_at.String()
+		product.UpdatedAt = products[i].Updated_at.String()
+		product.DeletedAt = products[i].Deleted_at.String()
 
 		resPorduct = append(resPorduct, &product)
 	}
@@ -131,9 +132,9 @@ func (s *serverApi) GetProductById(ctx context.Context, req *protductDB.ProductB
 		Count:     product.Count,
 		Status:    product.Status,
 		Category:  product.Category,
-		CreatedAt: product.Created_at,
-		UpdatedAt: product.Updated_at,
-		DeletedAt: product.Deleted_at,
+		CreatedAt: product.Created_at.String(),
+		UpdatedAt: product.Updated_at.String(),
+		DeletedAt: product.Deleted_at.String(),
 	}, nil
 }
 
@@ -142,36 +143,39 @@ func (s *serverApi) ShowRealTimeAddinAndDeleteing(_ *protductDB.Empty,
 	for {
 		if len(s.statusProduct) > 0 {
 			for key, product := range s.statusProduct {
-				stream.SendMsg(product.Status)
-				stream.Send(&protductDB.Product{
+				err := stream.Send(&protductDB.Product{
 					Id:        product.Id,
 					Name:      product.Name,
 					Price:     product.Price,
 					Count:     product.Count,
 					Status:    product.Status,
 					Category:  product.Category,
-					CreatedAt: product.Created_at,
-					UpdatedAt: product.Updated_at,
-					DeletedAt: product.Deleted_at,
+					CreatedAt: product.Created_at.String(),
+					UpdatedAt: product.Updated_at.String(),
+					DeletedAt: product.Deleted_at.String(),
 				})
-				delete(s.statusProduct,key)
+				if err != nil {
+					log.Fatal(err)
+				}
+				delete(s.statusProduct, key)
 			}
 		}
 	}
+	return nil
 }
 
 func (s *serverApi) UpdateProduc(ctx context.Context, req *protductDB.UpdateProductReq) (*protductDB.Product, error) {
 	ctx, cancel := context.WithTimeout(ctx, time.Second*4)
 	defer cancel()
-	product,err := s.product.UpdateProduc(ctx,&models.UpdateProducReq{
-		ID: req.Id,
-		Name: req.Name,
+	product, err := s.product.UpdateProduc(ctx, &models.UpdateProducReq{
+		ID:       req.Id,
+		Name:     req.Name,
 		Category: req.Category,
-		Count: req.Count,
-		Price: req.Proce,
+		Count:    req.Count,
+		Price:    req.Proce,
 	})
-	if err!= nil {
-		return nil,status.Error(codes.Internal,err.Error())
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
 	}
 	return &protductDB.Product{
 		Id:        product.Id,
@@ -180,8 +184,8 @@ func (s *serverApi) UpdateProduc(ctx context.Context, req *protductDB.UpdateProd
 		Count:     product.Count,
 		Status:    product.Status,
 		Category:  product.Category,
-		CreatedAt: product.Created_at,
-		UpdatedAt: product.Updated_at,
-		DeletedAt: product.Deleted_at,
-	},nil
+		CreatedAt: product.Created_at.String(),
+		UpdatedAt: product.Updated_at.String(),
+		DeletedAt: product.Deleted_at.String(),
+	}, nil
 }

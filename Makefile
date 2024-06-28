@@ -1,7 +1,8 @@
 gen-product:
 	protoc --go_out=. --go-grpc_out=. protos/protoduct/prtoduct.proto
 
-
+run:
+	go run cmd/main.go --config=${paths}
 DB_URL := "postgres://postgres:+_+diyor2005+_+@localhost:5432/productdb?sslmode=disable"
 
 migrate-file:

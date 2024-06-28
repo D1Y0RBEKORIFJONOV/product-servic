@@ -72,7 +72,7 @@ func NewConfig() (*Config, error) {
 	config.DB.User = getEnv("POSTGRES_USER", "postgres")
 	config.DB.Password = getEnv("POSTGRES_PASSWORD", "+_+diyor2005+_+")
 	config.DB.SslMode = getEnv("POSTGRES_SSLMODE", "disable")
-	config.DB.Name = getEnv("POSTGRES_DATABASE", "products")
+	config.DB.Name = getEnv("POSTGRES_DATABASE", "productdb")
 
 	// token configuration
 	config.Token.Secret = getEnv("TOKEN_SECRET", "token_secret")
